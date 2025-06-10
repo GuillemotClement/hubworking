@@ -1,0 +1,57 @@
+@startuml erd
+' hide the spot
+' hide circle
+' avoid problems with angled crows feet
+skinparam linetype ortho
+
+entity "Comment" as comment {
+  *id : number <<generated>>
+  --
+  title : text
+  content : text
+  date_time : datetime
+  workspace_id : number <<FK>>
+  user_id : number <<FK>>
+}
+
+entity "Workspace" as workspace {
+  *id : number <<generated>>
+  --
+  name : text
+  price : float
+  capacity : number
+  description : text
+  available : boolean
+}
+
+entity "User" as user {
+  *id : number <<generated>>
+  --
+  name : text
+  email : text
+  password : text
+}
+
+entity "Booking" as booking {
+  *id : number <<generated>>
+  --
+  start_date : date
+  end_date : date
+  workspace_id : number <<FK>>
+  user_id : number <<FK>>
+}
+
+workspace ||..o{ booking
+booking }o..|| user
+user ||..o{ comment
+workspace ||..o{ comment
+
+@enduml
+
+/*
+Type	Symbol
+Zero or One	|o--
+Exactly One	||--
+Zero or Many	}o--
+One or Many	}|--
+*/

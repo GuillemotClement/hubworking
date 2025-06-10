@@ -1,0 +1,23 @@
+# Diagramme d'activité
+# Parcours d'un client de l'entrée sur le site jusqu'à la réservation
+
+@startuml activity
+
+start
+:Tous les espaces;
+:Sélection d'un espace;
+
+repeat :Sélection un créneau horaire;
+backward:Message de non disponibilité;
+repeat while (Disponible ?) is (non) not (oui)
+
+:Valider la réservation;
+if (Connecté) then (non)
+:Connexion;
+else (oui)
+endif
+
+:Confirmation de réservation;
+end
+
+@enduml
