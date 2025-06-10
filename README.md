@@ -113,3 +113,27 @@ export default defineConfig({
 ```
 
 Une fois le dockerfile et le docker compose configurer on peut lancer le build du projet `docker compose up --build`
+
+## Prisma
+
+Pour le `database_url`, l'host correspond au nom du service dans le docker compose
+
+Pour installer Prisma sur le projet Nest, il faut venir lancer les commandes depuis le container.
+
+```shell
+# installation de Prisma
+$ npm install prisma --save-dev
+
+# unit Prisma CLI => ajout du dossier Prisma pour definir les models
+# venir ajouter le url_db dans le .env
+$ npx prisma init
+
+# une fois le model defis, on peut lancer la commande pour la migration
+$ npx prisma migrate dev --name init
+
+# installation du prisma client
+$ npm install @prisma/client
+# a chaque modif du model, on lance cette commande
+$ npx prisma generate
+
+```
