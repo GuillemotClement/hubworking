@@ -73,13 +73,7 @@ Le projet est une application pour la gestion des espace de coworking. Cette app
 - React + Vite + TypeScript
 - Docker
 - Tailwind
-- Directus
-
-## TODO
-
-1. Mise en place de l'environnement Docker
-   - Vite pour generer l'application React
-   - Directus pour la v1 pour le back end.
+- NestJS
 
 ## Utils
 
@@ -118,4 +112,4 @@ export default defineConfig({
 });
 ```
 
-Une fois le dockerfile et le docker compose configurer on peut lancer le build du projet `docker compose up --build` 
+Une fois le dockerfile et le docker compose configurer on peut lancer le build du projet `docker compose up --build`
