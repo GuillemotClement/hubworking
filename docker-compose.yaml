@@ -1,2 +1,20 @@
 services:
+  # on definis le container du front end React
   frontend:
+    # definis le nom du container
+    container_name: frontend
+    # definis le path pour acceder au DockerFile du container
+    build: ./frontend
+    # permet de definir les volumes
+    volumes:
+      # on lie le dossier frontend local avec le dosser du container
+      # le premier correspond au dossier local
+      # le second au dossier dans le container
+      - ./frontend:/app
+      # on lie le node_module du container a rien pour eviter les problemes de compatibilite
+      - /app/node_modules
+    # on mapp le port de la machine local avec celui du container
+    # le premier est le port sur la machine local
+    # le second correspond au port du container
+    ports:
+      - "5173:5173"
