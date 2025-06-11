@@ -23,12 +23,25 @@ services:
     container_name: backend
     build: ./backend
     volumes:
-      - ./backend:/app
       - /app/node_modules
     ports:
       - "3000:3000"
     depends_on:
       - database
+    tty: true
+
+  # backend:
+  #   image: node:22-alpine
+  #   volumes:
+  #     - ./backend:/usr/src/backend
+  #     - /usr/src/backend/node_modules
+  #   ports:
+  #     - 3000:3000
+  #   working_dir: /usr/src/backend
+  #   tty: true
+  #   depends_on:
+  #     - database
+  #   command: sh -c "npm install && npm run build && node dist/main"
 
   database:
     container_name: database

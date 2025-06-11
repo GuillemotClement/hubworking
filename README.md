@@ -135,5 +135,64 @@ $ npx prisma migrate dev --name init
 $ npm install @prisma/client
 # a chaque modif du model, on lance cette commande
 $ npx prisma generate
-
 ```
+
+## Nest
+
+### Service Prisma
+
+Une fois Prisma et le model de Db fait, il faut venir creer un nouvea un nouveau service `/src/prisma.service.ts`.
+Ce service permet d'utiliser Prisma dans le projet Nest.
+
+### Creation d'un module
+
+Un module permet de gerer une ressource.
+
+Pour generer un nouveau module avec les fichiers necessaire pour une ressource
+
+```shell
+$ nest g res
+```
+
+On viens ensuite indiquer le nom du module.
+
+1. On definis l'entity
+   Dans le fichier `<module_name>/entities`, on viens indiquer les differentes props de la ressource.
+
+   Pour que cela fonctionne, il faut utiliser cette syntaxe.
+
+```ts
+import { Role } from "generated/prisma";
+
+export class RoleEntity implements Role {
+  // declaration des props de la ressource
+  id: number;
+  title: string;
+
+  // ajoute du constructeur pour instancier la valeurs des props
+  constructor(role: Role) {
+    this.id = role.id;
+    this.title = role.title;
+  }
+}
+```
+
+2. Definit le DTO
+   cela permet de definir le typage lier aux methodes.
+
+```ts
+export class CreateRoleDto {
+  title: string;
+}
+```
+
+```ts
+import { PartialType } from '@nestjs/mapped-types';
+import { CreateRoleDto } from './create-role.dto';
+
+export class UpdateRoleDto extends PartialType(CreateRoleDto) {
+  title: string;
+}
+```
+
+3. On definis ensuite les methodes de cette ressource dans le service.
