@@ -1,5 +1,5 @@
+import { hashPassword } from 'src/utils/password';
 import { PrismaClient } from '../../generated/prisma';
-// import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
@@ -63,9 +63,7 @@ async function main() {
     data: {
       username: 'administrateur',
       email: 'admin@mail.com',
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-      // password: await bcrypt.hash('123456', 10),
-      password: '123456',
+      password: await hashPassword('123456'),
       image: 'https://randomuser.me/api/portraits/men/46.jpg',
       roleId: 1,
     },
@@ -75,7 +73,7 @@ async function main() {
     data: {
       username: 'gizmo',
       email: 'gizmo@mail.com',
-      password: '123456',
+      password: await hashPassword('123456'),
       image: 'https://randomuser.me/api/portraits/men/36.jpg',
       roleId: 2,
     },
@@ -85,7 +83,7 @@ async function main() {
     data: {
       username: 'julie',
       email: 'julie@mail.com',
-      password: '123456',
+      password: await hashPassword('123456'),
       image: 'https://randomuser.me/api/portraits/women/49.jpg',
       roleId: 2,
     },
