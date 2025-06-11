@@ -47,4 +47,13 @@ export class UsersService {
     });
     return new UserEntity(user);
   }
+
+  async findbyUsername(username: string) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        username,
+      },
+    });
+    return user ? new UserEntity(user) : null;
+  }
 }

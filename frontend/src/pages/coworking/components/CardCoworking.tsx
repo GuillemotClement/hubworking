@@ -14,7 +14,7 @@ export default function CardCoworking({ working }: CardCoworkingProps) {
   return (
     <div className='card bg-base-100 w-96 shadow-sm'>
       <figure>
-        <img src={image} alt={title} />
+        <img src={image} alt={title} className='w-full' />
       </figure>
       <div className='card-body'>
         <h2 className='card-title text-center'>{title}</h2>
