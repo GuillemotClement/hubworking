@@ -1,5 +1,66 @@
 # Nest
 
+## DTO
+
+Le DTO est utiliser pour typer les donnees attendu de la requete. Il permet simplement de definir ce qui doit etre fournis dans la requete provenant du front, mais il n'est pas utiliser pour typer ce qui sera ensuite forunis en BDD dans le service traitant la requete.
+c'est egalement ici que l'on effectue la validation des donnees fournis par le requetes.
+
+```ts
+import { IsEmail, IsNotEmpty, IsOptional, IsString, MinLength } from "class-validator";
+
+export class CreateUserDto {
+  @IsNotEmpty()
+  @IsString()
+  username: string;
+
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
+
+  @IsNotEmpty()
+  @MinLength(6)
+  password: string;
+
+  @IsOptional()
+  @IsString()
+  image?: string;
+}
+```
+
+## Controller
+
+C'est lui qui se charge de recuperer les donnees fournis par la requete.
+
+```ts
+// user.controller.ts
+@Post()
+create(@Body() createUserDto: CreateUserDto) {
+  return this.userService.create(createUserDto);
+}
+```
+
+## Service
+
+C'est lui qui se charge de faire le traitement de la requete. Exemple verifier si j'ai bien recuperer une image d'une requete de creation d'un nouvel utilisateur.
+
+```ts
+async create(createUserDto: CreateUserDto) {
+  // on viens recuperer l'image depuis le DTO
+  const image = createUserDto.image ?? 'https://picsum.photos/200'; // image par défaut
+  // on envoie les donnes dans la BDD pour la creation
+  const user = await this.prisma.user.create({
+    data: {
+      ...createUserDto,
+      image,
+      password: await this.hashPassword(createUserDto.password),
+      roleId: 1, // exemple
+    },
+  });
+  // on retourne le nouvel utilisateur qui a ete creer
+  return new UserEntity(user);
+}
+```
+
 ## Module
 
 Pour utiliser un service dans un autre service, on viens exporter le service souhaiter :

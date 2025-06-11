@@ -3,15 +3,35 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UserEntity } from './entities/user.entity';
+import { hashPassword } from 'src/utils/password';
+import { ICreateUser } from 'src/@types/users';
 
 @Injectable()
 export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createUserDto: CreateUserDto) {
+    // on recuoere le password et l'image pour traitement depuis les donnees de la requete
+    let { password, image } = createUserDto;
+    // on vient haser le mot de passe
+    password = await hashPassword(password);
+    // on viens verifier si on as une image fournis par la requete
+    if (!image) {
+      image = 'https://randomuser.me/api/portraits/lego/1.jpg';
+    }
+    // on viens creer l'objet data qui contient les donnees pour la creation de l'user
+    const data: ICreateUser = {
+      username: createUserDto.username,
+      email: createUserDto.email,
+      password,
+      image,
+      roleId: 2,
+    };
+    // envoie de la requete en BDD pour creer un nouvel user
     const user = await this.prisma.user.create({
-      data: createUserDto,
+      data,
     });
+
     return new UserEntity(user);
   }
 
