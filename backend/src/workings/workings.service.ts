@@ -1,26 +1,51 @@
 import { Injectable } from '@nestjs/common';
 import { CreateWorkingDto } from './dto/create-working.dto';
 import { UpdateWorkingDto } from './dto/update-working.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { WorkingEntity } from './entities/working.entity';
 
 @Injectable()
 export class WorkingsService {
-  create(createWorkingDto: CreateWorkingDto) {
-    return 'This action adds a new working';
+  constructor(private readonly prisma: PrismaService) {}
+
+  async create(createWorkingDto: CreateWorkingDto) {
+    const working = await this.prisma.working.create({
+      data: createWorkingDto,
+    });
+    return new WorkingEntity(working);
   }
 
-  findAll() {
-    return `This action returns all workings`;
+  async findAll() {
+    const workings = await this.prisma.working.findMany();
+    return workings.map((working) => new WorkingEntity(working));
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} working`;
+  async findOne(id: number) {
+    const working = await this.prisma.working.findUnique({
+      where: {
+        id,
+      },
+    });
+    return working ? new WorkingEntity(working) : null;
   }
 
-  update(id: number, updateWorkingDto: UpdateWorkingDto) {
-    return `This action updates a #${id} working`;
+  async update(id: number, updateWorkingDto: UpdateWorkingDto) {
+    const working = await this.prisma.working.update({
+      where: {
+        id,
+      },
+      data: updateWorkingDto,
+    });
+    return new WorkingEntity(working);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} working`;
+  async remove(id: number) {
+    const working = await this.prisma.working.delete({
+      where: {
+        id,
+      },
+    });
+
+    return new WorkingEntity(working);
   }
 }
