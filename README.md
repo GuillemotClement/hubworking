@@ -187,8 +187,8 @@ export class CreateRoleDto {
 ```
 
 ```ts
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateRoleDto } from './create-role.dto';
+import { PartialType } from "@nestjs/mapped-types";
+import { CreateRoleDto } from "./create-role.dto";
 
 export class UpdateRoleDto extends PartialType(CreateRoleDto) {
   title: string;
@@ -196,3 +196,21 @@ export class UpdateRoleDto extends PartialType(CreateRoleDto) {
 ```
 
 3. On definis ensuite les methodes de cette ressource dans le service.
+
+### Seed des data avec Prisma
+
+On viens ajouter dans le dossier `src/prisma/seed.ts`. Dans ce fichier on viens definir les donnees a envoyer.
+
+On ajoute ensuite cette ligne dans le fichier `package.json` :
+
+```json
+  "prisma": {
+    "seed": "ts-node src/prisma/seed.ts"
+  },
+```
+
+On viens ensuite lancer le seed depuis le container :
+
+```shell
+$ npx prisma db seed
+```
