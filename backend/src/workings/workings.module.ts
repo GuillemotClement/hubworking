@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { WorkingsService } from './workings.service';
 import { WorkingsController } from './workings.controller';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Module({
   controllers: [WorkingsController],
-  providers: [WorkingsService],
+  providers: [WorkingsService, PrismaService],
 })
 export class WorkingsModule {}
